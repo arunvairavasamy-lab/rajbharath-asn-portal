@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rajbharath ASN Portal - Create ASN</title>
+</head>
+<body>
+  <h1>Rajbharath ASN Portal - <%= existingAsn ? 'Edit & Resubmit ASN' : 'Create ASN' %></h1>
+  <p><a href="/supplier/dashboard">Back to My POs</a> | <a href="/supplier/asns">My ASNs</a> | <a href="/logout">Logout</a></p>
+
+  <h3>Against PO Number: <%= po.po_number %></h3>
+
+  <% if (existingAsn && existingAsn.rejection_reason) { %>
+    <p style="color: red;"><strong>Previous rejection reason:</strong> <%= existingAsn.rejection_reason %></p>
+  <% } %>
+
+  <form method="POST" action="/supplier/asn/preview">
+    <input type="hidden" name="po_id" value="<%= po.id %>">
+    <% if (existingAsn) { %>
+      <input type="hidden" name="asn_id" value="<%= existingAsn.id %>">
+    <% } %>
+
+    <label>Invoice Number:</label><br>
+    <input type="text" name="invoice_number" required
+      value="<%= existingAsn ? existingAsn.invoice_number : '' %>"><br><br>
+
+    <label>Invoice Date:</label><br>
+    <input type="date" name="invoice_date" required
+      value="<%= existingAsn ? existingAsn.invoice_date : '' %>"><br><br>
+
+    <label>Transport Method:</label><br>
+    <input type="text" name="transport_method" placeholder="e.g. By Road" required
+      value="<%= existingAsn ? existingAsn.transport_method : '' %>"><br><br>
+
+    <label>Vehicle Number:</label><br>
+    <input type="text" name="vehicle_number" required
+      value="<%= existingAsn ? existingAsn.vehicle_number : '' %>"><br><br>
+
+    <h3>Line Items</h3>
+    <table id="items-table" border="1" cellpadding="6">
+      <tr>
+        <th>Part Description</th>
+        <th>Quantity</th>
+        <th>UOM</th>
+        <th>Amount with Tax</th>
+      </tr>
+      <% if (existingItems && existingItems.length > 0) { %>
+        <% existingItems.forEach(function(item) { %>
+          <tr>
+            <td><input type="text" name="part_description" required value="<%= item.part_description %>"></td>
+            <td><input type="number" step="0.01" name="qty" required value="<%= item.qty %>"></td>
+            <td><input type="text" name="uom" required value="<%= item.uom %>"></td>
+            <td><input type="number" step="0.01" name="amount_with_tax" required value="<%= item.amount_with_tax %>"></td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr>
+          <td><input type="text" name="part_description" required></td>
+          <td><input type="number" step="0.01" name="qty" required></td>
+          <td><input type="text" name="uom" placeholder="e.g. NOS" required></td>
+          <td><input type="number" step="0.01" name="amount_with_tax" required></td>
+        </tr>
+      <% } %>
+    </table>
+    <br>
+    <button type="button" onclick="addRow()">+ Add Another Line Item</button>
+    <br><br>
+
+    <button type="submit">Save ASN</button>
+  </form>
+
+  <script>
+    function addRow() {
+      const table = document.getElementById('items-table');
+      const newRow = table.rows[1].cloneNode(true);
+      newRow.querySelectorAll('input').forEach(function(input) {
+        input.value = '';
+      });
+      table.appendChild(newRow);
+    }
+  </script>
+</body>
+</html>

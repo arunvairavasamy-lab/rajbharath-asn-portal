@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rajbharath ASN Portal - ASN Saved</title>
+</head>
+<body>
+  <h1>Rajbharath ASN Portal</h1>
+  <h2 style="color: green;">ASN Saved Successfully!</h2>
+
+  <p><strong>ASN Number:</strong> <%= asnNumber %></p>
+
+  <p><strong>QR Code:</strong></p>
+  <img src="<%= qrDataUrl %>" alt="ASN QR Code" width="200" height="200">
+
+ <br><br>
+<a href="/supplier/asn/<%= asnId %>/print" target="_blank">Print ASN</a>
+<br><br>
+<a href="/supplier/dashboard">Back to My POs</a>

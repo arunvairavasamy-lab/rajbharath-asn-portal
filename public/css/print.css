@@ -1,0 +1,133 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 30px;
+  color: #000;
+  font-size: 13px;
+}
+
+.doc-box {
+  border: 1.5px solid #000;
+  max-width: 850px;
+  margin: 0 auto;
+}
+
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1.5px solid #000;
+  padding: 12px;
+}
+
+.doc-header-left {
+  display: flex;
+  align-items: center;
+}
+
+.doc-header-left img {
+  height: 55px;
+  margin-right: 12px;
+}
+
+.doc-header-left .company-name {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.doc-header-right {
+  text-align: right;
+}
+
+.doc-header-right h2 {
+  margin: 0 0 6px 0;
+  font-size: 18px;
+}
+
+.info-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 1.5px solid #000;
+}
+
+.info-table td {
+  border: 1px solid #000;
+  padding: 6px 10px;
+  vertical-align: top;
+  font-size: 13px;
+}
+
+.info-table .label {
+  font-weight: bold;
+  width: 20%;
+  background-color: #f5f5f5;
+}
+
+.items-section {
+  padding: 12px;
+}
+
+table.items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 5px;
+}
+
+table.items-table th, table.items-table td {
+  border: 1px solid #000;
+  padding: 8px;
+  text-align: left;
+  font-size: 13px;
+}
+
+table.items-table th {
+  background-color: #f0f0f0;
+}
+
+table.items-table td.num {
+  text-align: right;
+}
+
+.footer-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 20px 12px;
+  border-top: 1.5px solid #000;
+}
+
+.qr-block {
+  text-align: center;
+}
+
+.qr-block p {
+  margin: 4px 0 0 0;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.signature-block {
+  text-align: right;
+  font-size: 13px;
+}
+
+.signature-line {
+  margin-top: 50px;
+  border-top: 1px solid #000;
+  width: 200px;
+}
+
+.print-button {
+  max-width: 850px;
+  margin: 0 auto 15px auto;
+}
+
+@media print {
+  .print-button {
+    display: none;
+  }
+  body {
+    margin: 0;
+  }
+  .doc-box {
+    border: none;
+  }
+}

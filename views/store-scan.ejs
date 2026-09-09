@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rajbharath ASN Portal - Scan ASN</title>
+  <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+</head>
+<body>
+  <h1>Rajbharath ASN Portal - Scan ASN QR Code</h1>
+  <p><a href="/store/dashboard">Back to Dashboard</a> | <a href="/logout">Logout</a></p>
+
+  <div id="reader" style="width: 400px;"></div>
+
+  <p id="scan-result" style="color: green; font-weight: bold;"></p>
+
+  <hr>
+
+  <h3>Or enter ASN Number manually</h3>
+  <form method="GET" action="/store/asn/lookup">
+    <input type="text" name="asn_number" placeholder="e.g. ASN-0006" required>
+    <button type="submit">Open ASN</button>
+  </form>
+
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      document.getElementById('scan-result').innerText = 'Scanned: ' + decodedText + ' - Opening ASN...';
+      html5QrcodeScanner.clear();
+      window.location.href = '/store/asn/lookup?asn_number=' + encodeURIComponent(decodedText);
+    }
+
+    function onScanFailure(error) {
+      // This fires continuously while scanning - ignore, it's normal
+    }
+
+    var html5QrcodeScanner = new Html5QrcodeScanner(
+      "reader",
+      { fps: 10, qrbox: 250 }
+    );
+    html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+  </script>
+</body>
+</html>

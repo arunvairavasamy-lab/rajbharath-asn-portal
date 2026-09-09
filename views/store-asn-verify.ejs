@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rajbharath ASN Portal - Verify ASN</title>
+</head>
+<body>
+  <h1>Rajbharath ASN Portal - Verify ASN</h1>
+  <p><a href="/store/scan">Scan Another</a> | <a href="/store/dashboard">Dashboard</a> | <a href="/logout">Logout</a></p>
+
+  <% if (message) { %>
+    <p style="color: blue; font-weight: bold;"><%= message %></p>
+  <% } %>
+
+  <p><strong>ASN Number:</strong> <%= asn.asn_number %></p>
+  <p><strong>PO Number:</strong> <%= po.po_number %></p>
+  <p><strong>Supplier:</strong> <%= supplier.name %> (<%= supplier.code %>)</p>
+  <p><strong>Invoice Number:</strong> <%= asn.invoice_number %></p>
+  <p><strong>Invoice Date:</strong> <%= asn.invoice_date %></p>
+  <p><strong>Transport Method:</strong> <%= asn.transport_method %></p>
+  <p><strong>Vehicle Number:</strong> <%= asn.vehicle_number %></p>
+  <p><strong>Overall ASN Status:</strong> <%= asn.status %></p>
+
+  <h3>Line Items - Verify Each Item</h3>
+
+  <form method="POST" action="/store/asn/<%= asn.id %>/verify">
+    <table border="1" cellpadding="8">
+      <tr>
+        <th>Part Description</th>
+        <th>Quantity</th>
+        <th>UOM</th>
+        <th>Amount with Tax</th>
+        <th>Decision</th>
+        <th>Remarks</th>
+      </tr>
+      <% items.forEach(function(item) { %>
+        <tr>
+          <td><%= item.part_description %></td>
+          <td><%= item.qty %></td>
+          <td><%= item.uom %></td>
+          <td><%= item.amount_with_tax %></td>
+          <td>
+            <input type="hidden" name="item_ids" value="<%= item.id %>">
+            <label>
+              <input type="radio" name="item_status_<%= item.id %>" value="Approved"
+                <% if (item.item_status === 'Approved') { %>checked<% } %>>
+              Approve
+            </label><br>
+            <label>
+              <input type="radio" name="item_status_<%= item.id %>" value="Rejected"
+                <% if (item.item_status === 'Rejected') { %>checked<% } %>>
+              Reject
+            </label>
+          </td>
+          <td>
+            <input type="text" name="item_remarks_<%= item.id %>" value="<%= item.item_remarks || '' %>" placeholder="Optional remarks">
+          </td>
+        </tr>
+      <% }); %>
+    </table>
+    <br>
+    <button type="submit">Save Decisions</button>
+  </form>
+</body>
+</html>

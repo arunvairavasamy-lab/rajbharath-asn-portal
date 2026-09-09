@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rajbharath ASN Portal - Supplier</title>
+</head>
+<body>
+  <h1>Rajbharath ASN Portal - Supplier Dashboard</h1>
+  <p><a href="/supplier/asns">My ASNs</a> | <a href="/logout">Logout</a></p>
+
+  <h2>My Purchase Orders</h2>
+
+  <% if (pos.length === 0) { %>
+    <p>No POs assigned to you yet.</p>
+  <% } else { %>
+    <table border="1" cellpadding="8">
+      <tr>
+        <th>PO Number</th>
+        <th>Uploaded On</th>
+        <th>PO File</th>
+        <th>Action</th>
+      </tr>
+      <% pos.forEach(function(po) { %>
+        <tr>
+          <td><%= po.po_number %></td>
+          <td><%= po.uploaded_at %></td>
+          <td>
+            <% if (po.po_file_path) { %>
+              <a href="/supplier/po/<%= po.id %>/file" target="_blank">View PO</a>
+            <% } else { %>
+              No file
+            <% } %>
+          </td>
+          <td>
+            <a href="/supplier/asn/new/<%= po.id %>">Create ASN</a>
+          </td>
+        </tr>
+      <% }); %>
+    </table>
+  <% } %>
+</body>
+</html>

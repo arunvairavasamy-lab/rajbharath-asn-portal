@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rajbharath ASN Portal - My ASNs</title>
+</head>
+<body>
+  <h1>Rajbharath ASN Portal - My ASNs</h1>
+  <p><a href="/supplier/dashboard">My POs</a> | <a href="/logout">Logout</a></p>
+
+  <% if (asns.length === 0) { %>
+    <p>No ASNs created yet.</p>
+  <% } else { %>
+    <table border="1" cellpadding="8">
+      <tr>
+        <th>ASN Number</th>
+        <th>PO Number</th>
+        <th>Invoice Number</th>
+        <th>Status</th>
+        <th>Rejection Reason</th>
+        <th>Action</th>
+      </tr>
+      <% asns.forEach(function(asn) { %>
+        <tr>
+          <td><%= asn.asn_number %></td>
+          <td><%= asn.po_number %></td>
+          <td><%= asn.invoice_number %></td>
+          <td><%= asn.status %></td>
+          <td><%= asn.rejection_reason || '-' %></td>
+          <td>
+            <% if (asn.status === 'Rejected') { %>
+              <a href="/supplier/asn/edit/<%= asn.id %>">Edit & Resubmit</a>
+            <% } else { %>
+              <a href="/supplier/asn/<%= asn.id %>/print" target="_blank">Print</a>
+            <% } %>
+          </td>
+        </tr>
+      <% }); %>
+    </table>
+  <% } %>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rajbharath ASN Portal - Preview ASN</title>
+</head>
+<body>
+  <h1>Rajbharath ASN Portal - Preview ASN</h1>
+
+  <h3>Against PO Number: <%= po.po_number %></h3>
+
+  <p><strong>Invoice Number:</strong> <%= invoice_number %></p>
+  <p><strong>Invoice Date:</strong> <%= invoice_date %></p>
+  <p><strong>Transport Method:</strong> <%= transport_method %></p>
+  <p><strong>Vehicle Number:</strong> <%= vehicle_number %></p>
+
+  <h3>Line Items</h3>
+  <table border="1" cellpadding="6">
+    <tr>
+      <th>Part Description</th>
+      <th>Quantity</th>
+      <th>UOM</th>
+      <th>Amount with Tax</th>
+    </tr>
+    <% items.forEach(function(item) { %>
+      <tr>
+        <td><%= item.part_description %></td>
+        <td><%= item.qty %></td>
+        <td><%= item.uom %></td>
+        <td><%= item.amount_with_tax %></td>
+      </tr>
+    <% }); %>
+  </table>
+
+  <br>
+
+  <form method="POST" action="/supplier/asn/save">
+    <input type="hidden" name="po_id" value="<%= po.id %>">
+    <% if (asn_id) { %>
+      <input type="hidden" name="asn_id" value="<%= asn_id %>">
+    <% } %>
+    <input type="hidden" name="invoice_number" value="<%= invoice_number %>">
+    <input type="hidden" name="invoice_date" value="<%= invoice_date %>">
+    <input type="hidden" name="transport_method" value="<%= transport_method %>">
+    <input type="hidden" name="vehicle_number" value="<%= vehicle_number %>">
+
+    <% items.forEach(function(item) { %>
+      <input type="hidden" name="part_description" value="<%= item.part_description %>">
+      <input type="hidden" name="qty" value="<%= item.qty %>">
+      <input type="hidden" name="uom" value="<%= item.uom %>">
+      <input type="hidden" name="amount_with_tax" value="<%= item.amount_with_tax %>">
+    <% }); %>
+
+    <button type="submit">Confirm & Save ASN</button>
+  </form>
+
+  <br>
+  <a href="/supplier/dashboard">Cancel and go back</a>
+</body>
+</html>

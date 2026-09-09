@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rajbharath ASN Portal - Admin</title>
+</head>
+<body>
+  <h1>Rajbharath ASN Portal - Admin Dashboard</h1>
+  <p>
+  <a href="/admin/dashboard">Suppliers</a> |
+  <a href="/admin/po/upload">Upload PO</a> |
+  <a href="/logout">Logout</a>
+</p>
+
+  <% if (success) { %>
+    <p style="color: green;"><%= success %></p>
+  <% } %>
+  <% if (error) { %>
+    <p style="color: red;"><%= error %></p>
+  <% } %>
+
+  <h2>Add New Supplier</h2>
+  <form method="POST" action="/admin/suppliers/add">
+    <label>Supplier Name:</label><br>
+    <input type="text" name="name" required><br><br>
+
+    <label>Supplier Code:</label><br>
+    <input type="text" name="code" required><br><br>
+
+    <label>Login Username (for this supplier):</label><br>
+    <input type="text" name="username" required><br><br>
+
+    <label>Login Password (for this supplier):</label><br>
+    <input type="password" name="password" required><br><br>
+
+    <button type="submit">Add Supplier</button>
+  </form>
+
+  <h2>Existing Suppliers</h2>
+  <table border="1" cellpadding="8">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Code</th>
+    </tr>
+    <% suppliers.forEach(function(supplier) { %>
+      <tr>
+        <td><%= supplier.id %></td>
+        <td><%= supplier.name %></td>
+        <td><%= supplier.code %></td>
+      </tr>
+    <% }); %>
+  </table>
+</body>
+</html>

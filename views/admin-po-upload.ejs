@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rajbharath ASN Portal - PO Upload</title>
+</head>
+<body>
+  <h1>Rajbharath ASN Portal - Admin</h1>
+  <p>
+    <a href="/admin/dashboard">Suppliers</a> |
+    <a href="/admin/po/upload">Upload PO</a> |
+    <a href="/logout">Logout</a>
+  </p>
+
+  <% if (success) { %>
+    <p style="color: green;"><%= success %></p>
+  <% } %>
+  <% if (error) { %>
+    <p style="color: red;"><%= error %></p>
+  <% } %>
+
+  <h2>Upload New PO</h2>
+  <form method="POST" action="/admin/po/upload" enctype="multipart/form-data">
+    <label>PO Number:</label><br>
+    <input type="text" name="po_number" required><br><br>
+
+    <label>Supplier:</label><br>
+    <select name="supplier_id" required>
+      <option value="">-- Select Supplier --</option>
+      <% suppliers.forEach(function(supplier) { %>
+        <option value="<%= supplier.id %>"><%= supplier.name %> (<%= supplier.code %>)</option>
+      <% }); %>
+    </select><br><br>
+
+    <label>PO File (PDF):</label><br>
+    <input type="file" name="po_file" accept=".pdf" required><br><br>
+
+    <button type="submit">Upload PO</button>
+  </form>
+
+  <h2>Uploaded POs</h2>
+  <table border="1" cellpadding="8">
+    <tr>
+      <th>ID</th>
+      <th>PO Number</th>
+      <th>Supplier</th>
+      <th>File</th>
+    </tr>
+    <% pos.forEach(function(po) { %>
+      <tr>
+        <td><%= po.id %></td>
+        <td><%= po.po_number %></td>
+        <td><%= po.supplier_name %></td>
+        <td>
+          <% if (po.po_file_path) { %>
+            <a href="/admin/po/<%= po.id %>/file" target="_blank">View PDF</a>
+          <% } else { %>
+            No file
+          <% } %>
+        </td>
+      </tr>
+    <% }); %>
+  </table>
+</body>
+</html>
