@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const session = require('express-session');
 const bcrypt = require('bcryptjs');
-const db = require('./db');
+const pool = require('./db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -22,16 +22,23 @@ app.use(session({
 }));
 
 // Auto-create default accounts if they don't already exist
-function ensureUser(username, plainPassword, role) {
-  const existing = db.prepare('SELECT * FROM users WHERE username = ?').get(username);
-  if (!existing) {
-    const hashed = bcrypt.hashSync(plainPassword, 10);
-    db.prepare('INSERT INTO users (username, password, role) VALUES (?, ?, ?)').run(username, hashed, role);
-    console.log('Created default user:', username);
+async function ensureUser(username, plainPassword, role) {
+  try {
+    const result = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    if (result.rows.length === 0) {
+      const hashed = bcrypt.hashSync(plainPassword, 10);
+      await pool.query('INSERT INTO users (username, password, role) VALUES ($1, $2, $3)', [username, hashed, role]);
+      console.log('Created default user:', username);
+    }
+  } catch (err) {
+    console.error('Error ensuring user', username, err);
   }
 }
-ensureUser('admin', 'admin123', 'admin');
-ensureUser('store1', 'store123', 'store');
+
+setTimeout(() => {
+  ensureUser('admin', 'admin123', 'admin');
+  ensureUser('store1', 'store123', 'store');
+}, 2000);
 
 // Auth routes (login/logout)
 const authRoutes = require('./routes/auth');
